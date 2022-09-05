@@ -1,0 +1,49 @@
+{
+  "manifestVersion": 1,
+  "id": "GitHubAppClient",
+  "name": "GitHubAppClient",
+  "version": "0.1.26",
+  "publisher": "tdashworth",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "A set of tasks that call the GitHub API as a provided GitHub App (bot).",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "icons": {
+    "default": "icon.png"
+  },
+  "files": [
+    {
+      "path": "tasks/GitHubAppCreateIssueComment"
+    },
+    {
+      "path": "tasks/GitHubAppDeleteIssueComment"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "GitHubAppCreateIssueComment",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/GitHubAppCreateIssueComment"
+      }
+    },
+    {
+      "id": "GitHubAppDeleteIssueComment",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/GitHubAppDeleteIssueComment"
+      }
+    }
+  ]
+}

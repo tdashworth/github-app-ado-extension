@@ -1,0 +1,6 @@
+bin/
+
+tasks/*/node_modules/
+tasks/*/index.js
+
+/*.private-key.pem
