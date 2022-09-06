@@ -1,8 +1,9 @@
 {
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/vss-extension.json",
   "manifestVersion": 1,
   "id": "GitHubAppClient",
-  "name": "GitHubAppClient",
-  "version": "0.1.26",
+  "name": "GitHub App Client",
+  "version": "0.1.27",
   "publisher": "tdashworth",
   "targets": [
     {
