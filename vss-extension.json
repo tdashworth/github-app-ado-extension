@@ -3,7 +3,7 @@
   "manifestVersion": 1,
   "id": "GitHubAppClient",
   "name": "GitHub App Client",
-  "version": "0.1.27",
+  "version": "0.1.29",
   "publisher": "tdashworth",
   "targets": [
     {
