@@ -1,6 +1,8 @@
 import tl = require('azure-pipelines-task-lib/task');
 import axios = require('axios');
 import { App, Octokit } from 'octokit';
+import fs from 'fs';
+import path from 'path';
 
 async function run() {
   try {
@@ -17,6 +19,7 @@ async function run() {
     const prerelease = tl.getBoolInput('prerelease');
     const discussionCategoryName = tl.getInput('discussionCategoryName');
     const generateReleaseNotes = tl.getBoolInput('generateReleaseNotes');
+    const assets = tl.getInput('assets');
 
     tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
     tl.debug(`appId: ${appId}`);
@@ -30,6 +33,7 @@ async function run() {
     tl.debug(`prerelease: ${prerelease}`);
     tl.debug(`discussionCategoryName: ${discussionCategoryName}`);
     tl.debug(`generateReleaseNotes: ${generateReleaseNotes}`);
+    tl.debug(`assets: ${assets}`);
 
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
@@ -48,8 +52,38 @@ async function run() {
       generate_release_notes: generateReleaseNotes,
     });
 
-    tl.setVariable("ReleaseId", `${response.data.id}`, false, true);
-  } catch (err){
+    const releaseId = response.data.id
+
+    tl.setVariable("ReleaseId", `${releaseId}`, false, true);
+    tl.debug(`Release created (${releaseId})`);
+
+    if (assets == null) return; // Nothing else to do.
+
+    async function uploadFile(filePath: string) {
+      tl.debug(`Uploading asset: ${filePath}`);
+
+      await installationClient.rest.repos.uploadReleaseAsset({
+        owner: repoOwner,
+        repo: repoName,
+        release_id: releaseId,
+        name: filePath.substring(filePath.replace(/\\/g, "/").lastIndexOf("/") + 1, filePath.length),
+        data: fs.readFileSync(filePath).toString("base64"),
+      });
+    }
+
+    if (fs.lstatSync(assets).isDirectory()) {
+      await Promise.all(
+        fs.readdirSync(assets)
+        .map(x => path.join(assets, x))
+        .filter(x => fs.lstatSync(x).isFile())
+        .map(x => uploadFile(x))
+      );
+    }
+
+    if (fs.lstatSync(assets).isFile()) {
+      await uploadFile(assets);
+    }
+  } catch (err) {
     tl.error(err as string)
     tl.setResult(tl.TaskResult.Failed, (err as Error)?.message ?? err)
   }
