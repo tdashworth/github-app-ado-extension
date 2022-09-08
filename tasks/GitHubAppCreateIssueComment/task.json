@@ -4,6 +4,7 @@
   "name": "GitHubAppCreateIssueComment",
   "friendlyName": "Create Issue Comment (GitHub App)",
   "description": "Create a comment on a GitHub issue as a GitHub App (bot).",
+  "helpUrl": "https://docs.github.com/en/rest/issues/comments#create-an-issue-comment",
   "author": "tdashworth",
   "category": "Utility",
   "visibility": [
