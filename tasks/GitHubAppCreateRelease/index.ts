@@ -9,23 +9,46 @@ async function run() {
     const appId = parseInt(rawAppId);
     const repoOwner = tl.getInputRequired('repoOwner');
     const repoName = tl.getInputRequired('repoName');
+    const tagName = tl.getInputRequired('tagName');
+    const targetCommitish = tl.getInputRequired('targetCommitish');
+    const name = tl.getInput('name');
+    const body = tl.getInput('body');
+    const draft = tl.getBoolInput('draft');
+    const prerelease = tl.getBoolInput('prerelease');
+    const discussionCategoryName = tl.getInput('discussionCategoryName');
+    const generateReleaseNotes = tl.getBoolInput('generateReleaseNotes');
 
     tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
     tl.debug(`appId: ${appId}`);
     tl.debug(`repoOwner: ${repoOwner}`);
     tl.debug(`repoName: ${repoName}`);
+    tl.debug(`tagName: ${tagName}`);
+    tl.debug(`targetCommitish: ${targetCommitish}`);
+    tl.debug(`name: ${name}`);
+    tl.debug(`body: ${body}`);
+    tl.debug(`draft: ${draft}`);
+    tl.debug(`prerelease: ${prerelease}`);
+    tl.debug(`discussionCategoryName: ${discussionCategoryName}`);
+    tl.debug(`generateReleaseNotes: ${generateReleaseNotes}`);
 
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
-    // https://cli.github.com/manual/gh_release_create
+    // https://docs.github.com/en/rest/releases/releases#create-a-release
 
-    installationClient.rest.repos.createRelease({
+    const response = await installationClient.rest.repos.createRelease({
       owner: repoOwner,
       repo: repoName,
-      tag_name: "[to do]"
-    })
+      tag_name: tagName,
+      target_commitish: targetCommitish,
+      name: name,
+      body: body,
+      draft: draft,
+      prerelease: prerelease,
+      discussion_category_name: discussionCategoryName,
+      generate_release_notes: generateReleaseNotes,
+    });
 
-    //[to update]
+    tl.setVariable("ReleaseId", `${response.data.id}`, false, true);
   } catch (err){
     tl.error(err as string)
     tl.setResult(tl.TaskResult.Failed, (err as Error)?.message ?? err)
