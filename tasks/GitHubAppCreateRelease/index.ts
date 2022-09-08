@@ -12,7 +12,7 @@ async function run() {
     const repoOwner = tl.getInputRequired('repoOwner');
     const repoName = tl.getInputRequired('repoName');
     const tagName = tl.getInputRequired('tagName');
-    const targetCommitish = tl.getInputRequired('targetCommitish');
+    const targetCommitish = tl.getInput('targetCommitish');
     const name = tl.getInput('name');
     const body = tl.getInput('body');
     const draft = tl.getBoolInput('draft');

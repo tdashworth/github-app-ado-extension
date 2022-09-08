@@ -77,7 +77,7 @@ steps:
       This is a release made by my **bot** via Azure Pipelines!
     draft: false # optional
     prerelease: false # optional
-    discussionCategoryName: false # optional
+    discussionCategoryName: 'some category name' # optional
     generateReleaseNotes: false # optional
     assets: ./release-assets # optional, can be a single file or a folder where all root files are uploaded
 ```
