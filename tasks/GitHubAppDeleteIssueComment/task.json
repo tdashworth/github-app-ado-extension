@@ -4,6 +4,7 @@
   "name": "GitHubAppDeleteIssueComment",
   "friendlyName": "Delete Issue Comment (GitHub App)",
   "description": "Delete a comment on a GitHub issue as a GitHub App (bot).",
+  "helpUrl": "https://docs.github.com/en/rest/issues/comments#delete-an-issue-comment",
   "author": "tdashworth",
   "category": "Utility",
   "visibility": [
@@ -14,7 +15,7 @@
   "version": {
     "Major": 0,
     "Minor": 1,
-    "Patch": 28
+    "Patch": 29
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "GitHub App: Delete Issue Comment",

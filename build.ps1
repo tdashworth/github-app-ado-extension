@@ -3,6 +3,11 @@ cd "$PSScriptRoot/tasks/GitHubAppCreateIssueComment"
 npm install
 tsc
 
+echo "Building GitHubAppCreateRelease..."
+cd "$PSScriptRoot/tasks/GitHubAppCreateRelease"
+npm install
+tsc
+
 echo "Building GitHubAppDeleteIssueComment..."
 cd "$PSScriptRoot/tasks/GitHubAppDeleteIssueComment"
 npm install

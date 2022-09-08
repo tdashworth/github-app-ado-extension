@@ -1,6 +1,8 @@
 import tl = require('azure-pipelines-task-lib/task');
 import axios = require('axios');
 import { App, Octokit } from 'octokit';
+import fs from 'fs';
+import path from 'path';
 
 async function run() {
   try {
@@ -9,21 +11,65 @@ async function run() {
     const appId = parseInt(rawAppId);
     const repoOwner = tl.getInputRequired('repoOwner');
     const repoName = tl.getInputRequired('repoName');
-    const rawIssueId = tl.getInputRequired('issueId');
-    const issueId = parseInt(rawIssueId);
-    const commentBody = tl.getInputRequired('body');
+    const tagName = tl.getInputRequired('tagName');
+    const targetCommitish = tl.getInput('targetCommitish');
+    const name = tl.getInput('name');
+    const body = tl.getInput('body');
+    const draft = tl.getBoolInput('draft');
+    const prerelease = tl.getBoolInput('prerelease');
+    const discussionCategoryName = tl.getInput('discussionCategoryName');
+    const generateReleaseNotes = tl.getBoolInput('generateReleaseNotes');
+    const assets = tl.getInput('assets');
 
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
-    const comment = await installationClient.rest.issues.createComment({
+    // https://docs.github.com/en/rest/releases/releases#create-a-release
+
+    const response = await installationClient.rest.repos.createRelease({
       owner: repoOwner,
       repo: repoName,
-      issue_number: issueId,
-      body: commentBody
+      tag_name: tagName,
+      target_commitish: targetCommitish,
+      name: name,
+      body: body,
+      draft: draft,
+      prerelease: prerelease,
+      discussion_category_name: discussionCategoryName,
+      generate_release_notes: generateReleaseNotes,
     });
 
-    tl.setVariable("CommentId", `${comment.data.id}`, false, true);
-  } catch (err){
+    const releaseId = response.data.id
+
+    tl.setVariable("ReleaseId", `${releaseId}`, false, true);
+    tl.debug(`Release created (${releaseId})`);
+
+    if (assets == null) return; // Nothing else to do.
+
+    async function uploadFile(filePath: string) {
+      tl.debug(`Uploading asset: ${filePath}`);
+
+      await installationClient.rest.repos.uploadReleaseAsset({
+        owner: repoOwner,
+        repo: repoName,
+        release_id: releaseId,
+        name: filePath.substring(filePath.replace(/\\/g, "/").lastIndexOf("/") + 1, filePath.length),
+        data: fs.readFileSync(filePath).toString("base64"),
+      });
+    }
+
+    if (fs.lstatSync(assets).isDirectory()) {
+      await Promise.all(
+        fs.readdirSync(assets)
+        .map(x => path.join(assets, x))
+        .filter(x => fs.lstatSync(x).isFile())
+        .map(x => uploadFile(x))
+      );
+    }
+
+    if (fs.lstatSync(assets).isFile()) {
+      await uploadFile(assets);
+    }
+  } catch (err) {
     tl.error(err as string)
     tl.setResult(tl.TaskResult.Failed, (err as Error)?.message ?? err)
   }

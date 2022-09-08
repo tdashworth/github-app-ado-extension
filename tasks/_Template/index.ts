@@ -10,11 +10,6 @@ async function run() {
     const repoOwner = tl.getInputRequired('repoOwner');
     const repoName = tl.getInputRequired('repoName');
 
-    tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
-    tl.debug(`appId: ${appId}`);
-    tl.debug(`repoOwner: ${repoOwner}`);
-    tl.debug(`repoName: ${repoName}`);
-
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
     //[to update]

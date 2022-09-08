@@ -39,10 +39,10 @@ steps:
     body: > # multiple lines and markdown supported.
       ### Example Comment
 
-      This a comment made by my **bot** via Azure Pipelines! 
+      This is a comment made by my **bot** via Azure Pipelines! 
 ```
 
-> Note: this task outputs the ID of the comment so that it can be deleted later if required. You can see this in action in [Delete Comment on an Issue/PR](#delete-comment-on-an-issuepr).
+> Note: this task outputs the ID of the comment (`CommentId`) so that it can be deleted later if required. You can see this in action in [Delete Comment on an Issue/PR](#delete-comment-on-an-issuepr).
 
 ### Delete Comment on an Issue/PR
 
@@ -57,6 +57,32 @@ steps:
     commentId: $(CreateComment.CommentId)
     #`CreateComment` comes from the name property of the `GitHubAppCreateIssueComment` task
 ```
+
+### Create a Release
+
+```yml
+steps:
+- task: GitHubAppCreateRelease@0
+  inputs:
+    privateKey: 'tdashworth-test-app.private-key.pem'
+    appId: 123456
+    repoOwner: 'tdashworth'
+    repoName: 'github-app-ado-extension'
+    tagName: 'v1.0.0'
+    targetCommitish: 'a1b2b3b4' # optional
+    name: 'Example Release' # optional
+    body: > # optional, multiple lines and markdown supported.
+      ### Example Release
+
+      This is a release made by my **bot** via Azure Pipelines!
+    draft: false # optional
+    prerelease: false # optional
+    discussionCategoryName: 'some category name' # optional
+    generateReleaseNotes: false # optional
+    assets: ./release-assets # optional, can be a single file or a folder where all root files are uploaded
+```
+
+> Note: this task outputs the ID of the release (`ReleaseId`).
 
 ## Contribution
 
