@@ -12,12 +12,6 @@ async function run() {
     const rawCommentId = tl.getInputRequired('commentId');
     const commentId = parseInt(rawCommentId);
 
-    tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
-    tl.debug(`appId: ${appId}`);
-    tl.debug(`repoOwner: ${repoOwner}`);
-    tl.debug(`repoName: ${repoName}`);
-    tl.debug(`commentId: ${commentId}`);
-
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
     await installationClient.rest.issues.deleteComment({

@@ -13,13 +13,6 @@ async function run() {
     const issueId = parseInt(rawIssueId);
     const commentBody = tl.getInputRequired('body');
 
-    tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
-    tl.debug(`appId: ${appId}`);
-    tl.debug(`repoOwner: ${repoOwner}`);
-    tl.debug(`repoName: ${repoName}`);
-    tl.debug(`issueId: ${issueId}`);
-    tl.debug(`commentBody: ${commentBody}`);
-
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
     const comment = await installationClient.rest.issues.createComment({

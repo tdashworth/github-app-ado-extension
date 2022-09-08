@@ -21,20 +21,6 @@ async function run() {
     const generateReleaseNotes = tl.getBoolInput('generateReleaseNotes');
     const assets = tl.getInput('assets');
 
-    tl.debug(`private key: ${(privateKey ?? "").substring(0, 30)}...`);
-    tl.debug(`appId: ${appId}`);
-    tl.debug(`repoOwner: ${repoOwner}`);
-    tl.debug(`repoName: ${repoName}`);
-    tl.debug(`tagName: ${tagName}`);
-    tl.debug(`targetCommitish: ${targetCommitish}`);
-    tl.debug(`name: ${name}`);
-    tl.debug(`body: ${body}`);
-    tl.debug(`draft: ${draft}`);
-    tl.debug(`prerelease: ${prerelease}`);
-    tl.debug(`discussionCategoryName: ${discussionCategoryName}`);
-    tl.debug(`generateReleaseNotes: ${generateReleaseNotes}`);
-    tl.debug(`assets: ${assets}`);
-
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
     // https://docs.github.com/en/rest/releases/releases#create-a-release
