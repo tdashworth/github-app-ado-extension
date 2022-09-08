@@ -3,7 +3,7 @@
   "manifestVersion": 1,
   "id": "GitHubAppClient",
   "name": "GitHub App Client",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "publisher": "tdashworth",
   "targets": [
     {
@@ -16,6 +16,15 @@
   ],
   "icons": {
     "default": "icon.png"
+  },
+  "content": {
+    "details": {
+      "path": "README.md"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/tdashworth/github-app-ado-extension"
   },
   "files": [
     {
