@@ -33,9 +33,8 @@ steps:
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
     appId: 123456
-    repoOwner: 'tdashworth'
-    repoName: 'github-app-ado-extension'
-    issueId: 1 # this can be an issue or a PR
+    repo: $(Build.Repository.Name) # format should be `owner/repo`
+    issueId: $(System.PullRequest.PullRequestId) # this can be an issue or a PR
     body: > # multiple lines and markdown supported.
       ### Example Comment
 
@@ -52,8 +51,7 @@ steps:
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
     appId: 123456
-    repoOwner: 'tdashworth'
-    repoName: 'github-app-ado-extension'
+    repo: $(Build.Repository.Name) # format should be `owner/repo`
     commentId: $(CreateComment.CommentId)
     #`CreateComment` comes from the name property of the `GitHubAppCreateIssueComment` task
 ```
@@ -66,10 +64,9 @@ steps:
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
     appId: 123456
-    repoOwner: 'tdashworth'
-    repoName: 'github-app-ado-extension'
+    repo: $(Build.Repository.Name) # format should be `owner/repo`
     tagName: 'v1.0.0'
-    targetCommitish: 'a1b2b3b4' # optional
+    targetCommitish: '$(Build.SourceVersion)' # optional
     name: 'Example Release' # optional
     body: > # optional, multiple lines and markdown supported.
       ### Example Release

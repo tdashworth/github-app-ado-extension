@@ -7,8 +7,9 @@ async function run() {
     const privateKey = await getSecureFileContent('privateKey')
     const rawAppId = tl.getInputRequired('appId');
     const appId = parseInt(rawAppId);
-    const repoOwner = tl.getInputRequired('repoOwner');
-    const repoName = tl.getInputRequired('repoName');
+    const repo = tl.getInputRequired('repo');
+    const repoOwner = repo.split('/')[0];
+    const repoName = repo.split('/')[1];
     const rawCommentId = tl.getInputRequired('commentId');
     const commentId = parseInt(rawCommentId);
 
