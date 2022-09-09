@@ -28,7 +28,7 @@ The app must be installed in either the repo being accessed or the entire organi
 
 ```yml
 steps:
-- task: GitHubAppCreateIssueComment@0
+- task: GitHubAppCreateIssueComment@1
   name: CreateComment
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
@@ -48,7 +48,7 @@ steps:
 
 ```yml
 steps:
-- task: GitHubAppDeleteIssueComment@0
+- task: GitHubAppDeleteIssueComment@1
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
     appId: 123456
@@ -62,7 +62,7 @@ steps:
 
 ```yml
 steps:
-- task: GitHubAppCreateRelease@0
+- task: GitHubAppCreateRelease@1
   inputs:
     privateKey: 'tdashworth-test-app.private-key.pem'
     appId: 123456

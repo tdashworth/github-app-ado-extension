@@ -3,7 +3,7 @@
   "manifestVersion": 1,
   "id": "GitHubAppClient",
   "name": "GitHub App Client",
-  "version": "0.1.35",
+  "version": "1.0.0",
   "publisher": "tdashworth",
   "targets": [
     {
@@ -26,6 +26,7 @@
     "type": "git",
     "uri": "https://github.com/tdashworth/github-app-ado-extension"
   },
+  "public": true,
   "files": [
     {
       "path": "tasks/GitHubAppCreateIssueComment"
