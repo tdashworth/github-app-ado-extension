@@ -10,23 +10,39 @@ async function run() {
     const repo = tl.getInputRequired('repo');
     const repoOwner = repo.split('/')[0];
     const repoName = repo.split('/')[1];
-    const rawIssueId = tl.getInputRequired('issueId');
-    const issueId = parseInt(rawIssueId);
+    const issueId = getIssueId();
     const commentBody = tl.getInputRequired('body');
+
+    if (issueId == undefined) {
+      console.log("No ID provided. Terminating...");
+      return;
+    }
 
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
     const comment = await installationClient.rest.issues.createComment({
       owner: repoOwner,
       repo: repoName,
-      issue_number: issueId,
+      issue_number: issueId!,
       body: commentBody
     });
 
     tl.setVariable("CommentId", `${comment.data.id}`, false, true);
-  } catch (err){
+  } catch (err) {
     tl.error(err as string)
     tl.setResult(tl.TaskResult.Failed, (err as Error)?.message ?? err)
+  }
+}
+
+function getIssueId(): number | undefined {
+  const rawIssueId = tl.getInput('issueId');
+
+  if (rawIssueId) {
+    return parseInt(rawIssueId);
+  }
+  
+  if (tl.getVariable('Build.SourceBranch') && tl.getVariable('Build.SourceBranch')!.startsWith('refs/pull/')) {
+    return parseInt(tl.getVariable('Build.SourceBranch')!.split('/')[2]);
   }
 }
 

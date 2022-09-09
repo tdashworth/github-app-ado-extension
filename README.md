@@ -31,10 +31,10 @@ steps:
 - task: GitHubAppCreateIssueComment@1
   name: CreateComment
   inputs:
-    privateKey: 'tdashworth-test-app.private-key.pem'
+    privateKey: 'github-app.private-key.pem'
     appId: 123456
     repo: $(Build.Repository.Name) # format should be `owner/repo`
-    issueId: $(System.PullRequest.PullRequestId) # this can be an issue or a PR
+    issueId: 1 # optional (defaults to pr id if available), this can be an issue or a PR
     body: > # multiple lines and markdown supported.
       ### Example Comment
 
@@ -48,8 +48,9 @@ steps:
 ```yml
 steps:
 - task: GitHubAppDeleteIssueComment@1
+  condition: ne(CreateComment.CommentId, '') # this skips the step if the comment id could not be found
   inputs:
-    privateKey: 'tdashworth-test-app.private-key.pem'
+    privateKey: 'github-app.private-key.pem'
     appId: 123456
     repo: $(Build.Repository.Name) # format should be `owner/repo`
     commentId: $(CreateComment.CommentId)
@@ -62,7 +63,7 @@ steps:
 steps:
 - task: GitHubAppCreateRelease@1
   inputs:
-    privateKey: 'tdashworth-test-app.private-key.pem'
+    privateKey: 'github-app.private-key.pem'
     appId: 123456
     repo: $(Build.Repository.Name) # format should be `owner/repo`
     tagName: 'v1.0.0'

@@ -14,7 +14,7 @@
   "demands": [],
   "version": {
     "Major": 0,
-    "Minor": 1,
+    "Minor": 0,
     "Patch": 1
   },
   "minimumAgentVersion": "1.95.0",
@@ -40,7 +40,7 @@
       "label": "Repository",
       "defaultValue": "$(Build.Repository.Name)",
       "required": true,
-      "helpMarkDown": "The repository to comment against. The app must be installed against that repository."
+      "helpMarkDown": "The repository name. The app must be installed against that repository."
     }
   ],
   "execution": {
