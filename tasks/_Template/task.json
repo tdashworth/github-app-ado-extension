@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-  "id": "[to update]",
+  "id": "[generate-new-guid]",
   "name": "GitHubApp[to update]",
   "friendlyName": "[to update] (GitHub App)",
   "description": "[to update] as a GitHub App (bot).",

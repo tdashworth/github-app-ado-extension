@@ -29,16 +29,7 @@
   "public": true,
   "files": [
     {
-      "path": "tasks/GitHubAppCreateIssueComment"
-    },
-    {
-      "path": "tasks/GitHubAppCreateRelease"
-    },
-    {
-      "path": "tasks/GitHubAppDeleteIssueComment"
-    },
-    {
-      "path": "tasks/GitHubAppRestRequest"
+      "path": "tasks"
     }
   ],
   "contributions": [

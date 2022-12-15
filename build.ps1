@@ -1,25 +1,15 @@
-echo "Building GitHubAppCreateIssueComment..."
-cd "$PSScriptRoot/tasks/GitHubAppCreateIssueComment"
-npm install
-tsc
+Write-Output "Installing typescript..."
+npm install -g typescript
 
-echo "Building GitHubAppCreateRelease..."
-cd "$PSScriptRoot/tasks/GitHubAppCreateRelease"
-npm install
-tsc
+Get-ChildItem -Path "$PSScriptRoot/tasks/" | Where-Object { $_.Name -ne "_Template" } | ForEach-Object {
+  Write-Output "Building $_..."
+  Set-Location "$PSScriptRoot/tasks/$_"
+  npm install
+  tsc
+}
 
-echo "Building GitHubAppDeleteIssueComment..."
-cd "$PSScriptRoot/tasks/GitHubAppDeleteIssueComment"
-npm install
-tsc
+Write-Output "Building Extension..."
+Set-Location "$PSScriptRoot"
+npx tfx-cli extension create -manifest-globs vss-extension.json --output-path bin/TDAswhorth.GitHubAppClient.vsix
 
-echo "Building GitHubAppRestRequest..."
-cd "$PSScriptRoot/tasks/GitHubAppRestRequest"
-npm install
-tsc
-
-echo "Building Extension..."
-cd "$PSScriptRoot"
-tfx extension create -manifest-globs vss-extension.json --output-path bin/TDAswhorth.GitHubAppClient.vsix
-
-echo "Done."
+Write-Output "Done."
