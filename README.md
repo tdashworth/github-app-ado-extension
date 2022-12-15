@@ -92,7 +92,9 @@ steps:
     appId: 123456
     repo: $(Build.Repository.Name) # format should be `owner/repo`
     httpMethod: 'GET'
-    url: 'repos/tdashworth/github-app-ado-extension'
+    url: '/repos/tdashworth/github-app-ado-extension'
+    httpHeaders: '{ "content-type": "application/json;" }' # optional. as json
+    body: '{ "key": "value" }' # optional, as json
 ```
 
 > Note: this task outputs the response data as JSON (`ResponseDataAsJson`).

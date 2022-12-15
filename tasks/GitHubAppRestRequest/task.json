@@ -15,7 +15,7 @@
   "version": {
     "Major": 0,
     "Minor": 0,
-    "Patch": 1
+    "Patch": 2
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "GitHub App: REST Request",
@@ -63,6 +63,20 @@
       "label": "URL",
       "required": true,
       "helpMarkDown": "The url to request."
+    },
+    {
+      "name": "httpHeaders",
+      "type": "multiLine",
+      "label": "HTTP Headers",
+      "required": false,
+      "helpMarkDown": "HTTP headers as JSON object."
+    },
+    {
+      "name": "body",
+      "type": "multiLine",
+      "label": "Body",
+      "required": false,
+      "helpMarkDown": "The body as a JSON object."
     }
   ],
   "execution": {

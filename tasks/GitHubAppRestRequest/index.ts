@@ -1,6 +1,7 @@
 import tl = require('azure-pipelines-task-lib/task');
 import axios = require('axios');
 import { App, Octokit } from 'octokit';
+import { RequestParameters } from '@octokit/auth-app/dist-types/types';
 
 async function run() {
   try {
@@ -12,13 +13,19 @@ async function run() {
     const repoName = repo.split('/')[1];
     const httpMethod = tl.getInputRequired('httpMethod');
     const url = tl.getInputRequired('url');
+    const rawHeaders = tl.getInput('httpHeaders');
+    const rawBody = tl.getInput('body');
+
+    const options: RequestParameters & { method?: string | undefined; } & { url: string; } = {
+      method: httpMethod,
+      url: url,
+      headers: rawHeaders && JSON.parse(rawHeaders)
+    }
+    const body = rawBody ? JSON.parse(rawBody) : {}
 
     const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
 
-    const response = await installationClient.request({
-      method: httpMethod,
-      url: url,
-    });
+    const response = await installationClient.request.defaults(options)(body)
 
     tl.setVariable("ResponseDataAsJson", `${JSON.stringify(response.data)}`, false, true);
     tl.debug(`Request made (Status: ${response.status})`);
