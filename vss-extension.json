@@ -3,7 +3,7 @@
   "manifestVersion": 1,
   "id": "GitHubAppClient",
   "name": "GitHub App Client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "tdashworth",
   "targets": [
     {
@@ -36,6 +36,9 @@
     },
     {
       "path": "tasks/GitHubAppDeleteIssueComment"
+    },
+    {
+      "path": "tasks/GitHubAppRestRequest"
     }
   ],
   "contributions": [
@@ -67,6 +70,16 @@
       ],
       "properties": {
         "name": "tasks/GitHubAppDeleteIssueComment"
+      }
+    },
+    {
+      "id": "GitHubAppRestRequest",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/GitHubAppRestRequest"
       }
     }
   ]

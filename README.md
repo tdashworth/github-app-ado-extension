@@ -82,6 +82,21 @@ steps:
 
 > Note: this task outputs the ID of the release (`ReleaseId`).
 
+### REST Request
+
+```yml
+steps:
+- task: GitHubAppRestRequest@0
+  inputs:
+    privateKey: 'github-app.private-key.pem'
+    appId: 123456
+    repo: $(Build.Repository.Name) # format should be `owner/repo`
+    httpMethod: 'GET'
+    url: 'repos/tdashworth/github-app-ado-extension'
+```
+
+> Note: this task outputs the response data as JSON (`ResponseDataAsJson`).
+
 ## Contribution
 
 While the extension only supports the above actions so far, it's fairly trivial to add more. Please raise an issue requesting the action you desire or give it ago yourself and raise a PR!
