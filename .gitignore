@@ -2,5 +2,9 @@ bin/
 
 tasks/*/node_modules/
 tasks/*/index.js
+tasks/*/index.js.LICENSE.txt
 
 /*.private-key.pem
+debug/node_modules/
+
+node_modules/

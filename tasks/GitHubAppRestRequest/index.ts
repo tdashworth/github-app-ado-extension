@@ -8,9 +8,12 @@ async function run() {
     const privateKey = await getSecureFileContent('privateKey')
     const rawAppId = tl.getInputRequired('appId');
     const appId = parseInt(rawAppId);
-    const repo = tl.getInputRequired('repo');
-    const repoOwner = repo.split('/')[0];
-    const repoName = repo.split('/')[1];
+    const installationIdentifier = tl.getInputRequired('installationIdentifier');
+    const repo = tl.getInput('repo');
+    const repoOwner = repo?.split('/')[0];
+    const repoName = repo?.split('/')[1];
+    const installationId = tl.getInput('installationId');
+    
     const httpMethod = tl.getInputRequired('httpMethod');
     const url = tl.getInputRequired('url');
     const rawHeaders = tl.getInput('httpHeaders');
@@ -23,7 +26,7 @@ async function run() {
     }
     const body = rawBody ? JSON.parse(rawBody) : {}
 
-    const installationClient = await getInstallationClient(appId, privateKey, repoOwner, repoName);
+    const installationClient = await getInstallationClient(appId, privateKey, installationIdentifier, repoOwner, repoName, installationId);
 
     const response = await installationClient.request.defaults(options)(body)
 
@@ -62,16 +65,25 @@ async function getSecureFileContent(name: string): Promise<string> {
   return response.data
 }
 
-async function getInstallationClient(appId: number, privateKey: string, repoOwner: string, repoName: string): Promise<Octokit> {
+async function getInstallationClient(appId: number, privateKey: string, installationIdentifier: string, repoOwner?: string, repoName?: string, installationId?: string): Promise<Octokit> {
 
   const appClient = new App({ appId, privateKey });
 
-  const installation = await appClient.octokit.rest.apps.getRepoInstallation({
-    owner: repoOwner,
-    repo: repoName
-  });
+  switch (installationIdentifier) {
+    case "repo":
+      const installation = await appClient.octokit.rest.apps.getRepoInstallation({
+        owner: repoOwner!,
+        repo: repoName!
+      });
+    
+      return appClient.getInstallationOctokit(installation.data.id);
+    
+    case "installationIdentifier": 
+      return appClient.getInstallationOctokit(parseInt(installationId!));
 
-  return appClient.getInstallationOctokit(installation.data.id);
+    default:
+      throw `Unknown installationIdentifier '${installationIdentifier}'.`
+  }
 }
 
 run();

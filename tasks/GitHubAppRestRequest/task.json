@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
   "id": "ac8bd349-0086-4208-82a1-93d3c61bb077",
   "name": "GitHubAppRestRequest",
-  "friendlyName": "REST GitHubAppRestRequest (GitHub App)",
+  "friendlyName": "REST Request (GitHub App)",
   "description": "Make a HTTP request as a GitHub App (bot).",
   "helpUrl": "https://docs.github.com/en/rest/issues/comments#rest-request",
   "author": "tdashworth",
@@ -15,7 +15,7 @@
   "version": {
     "Major": 0,
     "Minor": 0,
-    "Patch": 2
+    "Patch": 5
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "GitHub App: REST Request",
@@ -35,12 +35,33 @@
       "helpMarkDown": "The GitHub App id to act as."
     },
     {
+      "name": "installationIdentifier",
+      "type": "pickList",
+      "options": {
+        "repo": "Repo owner and name`",
+        "installationId": "Installation ID"
+      },
+      "label": "Installation Identifier",
+      "defaultValue": "repo",
+      "required": true,
+      "helpMarkDown": "The method in which to find an installation to use."
+    },
+    {
       "name": "repo",
       "type": "string",
       "label": "Repository",
       "defaultValue": "$(Build.Repository.Name)",
+      "visibleRule": "installationIdentifier = repo",
       "required": true,
       "helpMarkDown": "The repository name. The app must be installed against that repository."
+    },
+    {
+      "name": "installationId",
+      "type": "int",
+      "label": "Installation ID",
+      "visibleRule": "installationIdentifier = installationId",
+      "required": true,
+      "helpMarkDown": "The ID of the installation to use."
     },
     {
       "name": "httpMethod",

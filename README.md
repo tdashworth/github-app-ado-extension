@@ -84,16 +84,36 @@ steps:
 
 ### REST Request
 
+This task has two options to identify an installation.
+1. By repo name e.g. `owner/repo`
+2. By installation ID directly e.g. `654321`
+
+This allows you perform user/organisation wide requests.
+
 ```yml
 steps:
 - task: GitHubAppRestRequest@0
   inputs:
     privateKey: 'github-app.private-key.pem'
     appId: 123456
+    installationIdentifier: 'repo'
     repo: $(Build.Repository.Name) # format should be `owner/repo`
     httpMethod: 'GET'
     url: '/repos/tdashworth/github-app-ado-extension'
-    httpHeaders: '{ "content-type": "application/json;" }' # optional. as json
+    httpHeaders: '{ "content-type": "application/json;" }' # optional, as json
+    body: '{ "key": "value" }' # optional, as json
+```
+```yml
+steps:
+- task: GitHubAppRestRequest@0
+  inputs:
+    privateKey: 'github-app.private-key.pem'
+    appId: 123456
+    installationIdentifier: 'installationId'
+    installationId: 654321
+    httpMethod: 'POST'
+    url: '/repos/tdashworth/github-app-ado-extension'
+    httpHeaders: '{ "content-type": "application/json;" }' # optional, as json
     body: '{ "key": "value" }' # optional, as json
 ```
 
